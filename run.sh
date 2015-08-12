@@ -1,7 +1,11 @@
 #!/bin/bash
 
 main() {
-  local database_yml_path="$PWD/config/database.yml"
+  if [ -z "$WERCKER_RAILS_DATABASE_YML_FILENAME" ]; then
+    export WERCKER_RAILS_DATABASE_YML_FILENAME="database.yml"
+  fi
+
+  local database_yml_path="$PWD/config/$WERCKER_RAILS_DATABASE_YML_FILENAME"
 
   if [ -f "$database_yml_path" ]; then
     debug 'config/database.yml already exists and will be overwritten'
