@@ -5,3 +5,6 @@ properties:
   filename:
     type: string
     required: false
+  database_prefix:
+    type: string
+    required: false

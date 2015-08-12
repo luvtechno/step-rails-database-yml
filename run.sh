@@ -11,6 +11,10 @@ main() {
     debug "config/$WERCKER_RAILS_DATABASE_YML_FILENAME already exists and will be overwritten"
   fi
 
+  if [ -z "$WERCKER_RAILS_DATABASE_YML_DATABASE_PREFIX" ]; then
+    export WERCKER_RAILS_DATABASE_YML_DATABASE_PREFIX=""
+  fi
+
   if [ -z "$WERCKER_RAILS_DATABASE_YML_POSTGRESQL_MIN_MESSAGE" ]; then
     export WERCKER_RAILS_DATABASE_YML_POSTGRESQL_MIN_MESSAGE="warning"
   fi
@@ -90,7 +94,7 @@ generate_postgresql_docker() {
 test:
     adapter: <%= ENV['WERCKER_POSTGRESQL_ADAPTER'] || 'postgresql' %>
     encoding: "utf8"
-    database: <%= ENV['POSTGRES_ENV_POSTGRES_DB'] || ENV['POSTGRES_ENV_POSTGRES_USER'] || 'postgres' %><%= ENV['TEST_ENV_NUMBER'] %>
+    database: $WERCKER_RAILS_DATABASE_YML_DATABASE_PREFIX<%= ENV['POSTGRES_ENV_POSTGRES_DB'] || ENV['POSTGRES_ENV_POSTGRES_USER'] || 'postgres' %><%= ENV['TEST_ENV_NUMBER'] %>
     username: <%= ENV['POSTGRES_ENV_POSTGRES_USER'] || 'postgres' %>
     password: <%= ENV['POSTGRES_ENV_POSTGRES_PASSWORD'] %>
     host: <%= ENV['POSTGRES_PORT_5432_TCP_ADDR'] %>
@@ -109,7 +113,7 @@ generate_postgresql_legacy() {
 test:
     adapter: <%= ENV['WERCKER_POSTGRESQL_ADAPTER'] || 'postgresql' %>
     encoding: "utf8"
-    database: <%= ENV['WERCKER_POSTGRESQL_DATABASE'] %><%= ENV['TEST_ENV_NUMBER'] %>
+    database: $WERCKER_RAILS_DATABASE_YML_DATABASE_PREFIX<%= ENV['WERCKER_POSTGRESQL_DATABASE'] %><%= ENV['TEST_ENV_NUMBER'] %>
     username: <%= ENV['WERCKER_POSTGRESQL_USERNAME'] %>
     password: <%= ENV['WERCKER_POSTGRESQL_PASSWORD'] %>
     host: <%= ENV['WERCKER_POSTGRESQL_HOST'] %>
@@ -129,7 +133,7 @@ generate_postgresql_local() {
 test:
     adapter: <%= ENV['WERCKER_POSTGRESQL_ADAPTER'] || 'postgresql' %>
     encoding: "utf8"
-    database: <%= ENV['WERCKER_POSTGRESQL_DATABASE'] %><%= ENV['TEST_ENV_NUMBER'] %>
+    database: $WERCKER_RAILS_DATABASE_YML_DATABASE_PREFIX<%= ENV['WERCKER_POSTGRESQL_DATABASE'] %><%= ENV['TEST_ENV_NUMBER'] %>
     username: <%= ENV['WERCKER_POSTGRESQL_USERNAME'] %>
     password: <%= ENV['WERCKER_POSTGRESQL_PASSWORD'] %>
     min_messages: $WERCKER_RAILS_DATABASE_YML_POSTGRESQL_MIN_MESSAGE
@@ -176,7 +180,7 @@ generate_mysql_legacy() {
 test:
     adapter: mysql2
     encoding: utf8
-    database: <%= ENV['WERCKER_MYSQL_DATABASE'] %><%= ENV['TEST_ENV_NUMBER'] %>
+    database: $WERCKER_RAILS_DATABASE_YML_DATABASE_PREFIX<%= ENV['WERCKER_MYSQL_DATABASE'] %><%= ENV['TEST_ENV_NUMBER'] %>
     username: <%= ENV['WERCKER_MYSQL_USERNAME'] %>
     password: <%= ENV['WERCKER_MYSQL_PASSWORD'] %>
     host: <%= ENV['WERCKER_MYSQL_HOST'] %>
