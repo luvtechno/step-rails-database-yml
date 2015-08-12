@@ -8,7 +8,7 @@ main() {
   local database_yml_path="$PWD/config/$WERCKER_RAILS_DATABASE_YML_FILENAME"
 
   if [ -f "$database_yml_path" ]; then
-    debug 'config/database.yml already exists and will be overwritten'
+    debug "config/$WERCKER_RAILS_DATABASE_YML_FILENAME already exists and will be overwritten"
   fi
 
   if [ -z "$WERCKER_RAILS_DATABASE_YML_POSTGRESQL_MIN_MESSAGE" ]; then
